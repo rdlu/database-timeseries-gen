@@ -10,7 +10,56 @@ class DnsData < DbData
 
   @window_size = 1800
 
-  @urls = %w(facebook.com)
+  @urls = %w(google.com.br
+          facebook.com
+          youtube.com
+          google.com
+          uol.com.br
+          globo.com
+          live.com
+          msn.com
+          yahoo.com
+          mercadolivre.com.br
+          blogspot.com.br
+          bing.com
+          wikipedia.org
+          netflix.com
+          twitter.com
+          instagram.com
+          olx.com.br
+          americanas.com.br
+          xvideos.com
+          fatosdesconhecidos.com.br
+          abril.com.br
+          linkedin.com
+          whatsapp.com
+          reclameaqui.com.br
+          caixa.gov.br
+          wordpress.com
+          amazon.com
+          submarino.com.br
+          microsoft.com
+          folha.uol.com.br
+          ig.com.br
+          buscape.com.br
+          blogger.com
+          itau.com.br
+          outbrain.com
+          ask.com
+          filmesonlinegratis.net
+          bb.com.br
+          tumblr.com
+          aliexpress.com
+          sp.gov.br
+          baixaki.com.br
+          t.co
+          bradesco.com.br
+          pinterest.com
+          mec.gov.br
+          terra.com.br
+          vagalume.com.br
+          correios.com.br
+          extra.com.br)
   #equals to 50
 
   def self.dns_servers

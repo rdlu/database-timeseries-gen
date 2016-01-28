@@ -2,6 +2,7 @@
 require './lib/db_data.rb'
 require './lib/dns_data.rb'
 require './lib/psql.rb'
+require './lib/zipfian.rb'
 
 record_target = ARGV[0].to_i
 dns_psql_file = File.new("records/dns_data_psql.sql",'w')
@@ -11,6 +12,7 @@ STDERR.puts "Generating INSERT records... please wait"
 record_counter = 0
 window_start = 1388534400
 window_end = window_start + DnsData.window_size - 1
+time_windows = [window_start]
 while record_counter < record_target
   DnsData.aliases.each do |aliaz|
     current_timestamp = rand(window_start..window_end)
@@ -23,13 +25,14 @@ while record_counter < record_target
   end
   window_start += DnsData.window_size
   window_end += DnsData.window_size
+  time_windows << window_start
 end
 
 STDERR.puts "Generated INSERT records: #{record_counter}, Last timestamp: #{window_end+1}"
 STDERR.puts "Generating SELECT/recent records... please wait"
 
 dns_psql_file_recent = File.new("records/dns_recent_psql.sql",'w')
-record_counter = 0
+s_record_counter = 0
 distribuition = [0,0,0]
 #Take all dns_servers from the most recent time window
 (1..4).each do |i|
@@ -54,3 +57,5 @@ distribuition = [0,0,0]
   end
 end
 STDERR.puts "Generated SELECT/recent records: #{record_counter}, distribuition: (#{distribuition.join(", ")})"
+
+STDERR.puts "Generating SELECT/zipfian records... please wait"
