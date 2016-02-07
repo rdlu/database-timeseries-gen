@@ -28,6 +28,8 @@ while record_counter < record_target
   time_windows << window_start
 end
 
+dns_psql_file.close
+
 STDERR.puts "Generated INSERT records: #{record_counter}, Last timestamp: #{window_end+1}"
 STDERR.puts "Generating SELECT/recent records... please wait"
 
@@ -35,7 +37,7 @@ dns_psql_file_recent = File.new("records/dns_recent_psql.sql",'w')
 s_record_counter = 0
 distribuition = [0,0,0]
 #Take all dns_servers from the most recent time window
-(1..4).each do |i|
+(1..100).each do |i|
   DnsData.dns_servers.shuffle.each do |dns_server|
     dns_psql_file_recent.puts Psql.select('dns_results', {start: window_start, end: window_end}, {dns_server: dns_server})
     record_counter += 1
@@ -56,6 +58,15 @@ distribuition = [0,0,0]
     end
   end
 end
-STDERR.puts "Generated SELECT/recent records: #{record_counter}, distribuition: (#{distribuition.join(", ")})"
+dns_psql_file_recent.close
+STDERR.puts "Generated SELECT/recent records: #{s_record_counter}, distribuition: (#{distribuition.join(", ")})"
 
 STDERR.puts "Generating SELECT/zipfian records... please wait"
+
+dns_psql_file_zipfian = File.new("records/dns_zipfian_psql.sql",'w')
+z_record_counter = 0
+num_of_time_windows = (window_end - window_start).div(DnsData.window_size)
+z = ScrambledZipfian.new num_of_time_windows
+(1..num_of_time_windows).each do |i|
+
+end
