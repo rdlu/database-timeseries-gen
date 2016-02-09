@@ -104,6 +104,10 @@ class DnsData < DbData
     end
   end
 
+  def self.field_type?(field,db_type)
+    values(db_type)[field]
+  end
+
   def self.window_size
     @window_size
   end

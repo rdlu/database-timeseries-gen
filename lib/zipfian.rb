@@ -1,3 +1,4 @@
+#Zipfian distribution for Ruby
 #heavily based on https://github.com/brianfrankcooper/YCSB/blob/master/core/src/main/java/com/yahoo/ycsb/generator/ZipfianGenerator.java
 #from Yahoo YCSB
 #by Rodrigo Dlugokenski
