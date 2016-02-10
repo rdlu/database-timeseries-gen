@@ -1,6 +1,6 @@
 class Psql
   def self.create_db
-    "CREATE USER `rdlu` WITH ENCRYPTED PASSWORD `rdlu`;
+    "CREATE USER `rdlu` WITH ENCRYPTED PASSWORD `xinfunrinfula`;
     CREATE DATABASE `rdlu` OWNER `rdlu` ENCODING `UTF8`;"
   end
 
