@@ -80,7 +80,7 @@ z_record_counter = 0
 num_of_time_windows = (window_end+1 - or_window_start).div(DnsData.window_size)
 puts "Zipfian:: Time windows: #{num_of_time_windows} | #{or_window_start} ~ #{window_end} / #{DnsData.window_size}"
 z = ScrambledZipfian.new num_of_time_windows
-(0..num_of_time_windows).each do |i|
+(0..num_of_time_windows/2).each do |i|
   j = z.next_value
   DnsData.dns_servers.shuffle.each do |dns_server|
     dns_psql_file_zipfian.puts Psql.select('dns_results', {start: or_window_start+(DnsData.window_size*j), end: or_window_start+(DnsData.window_size*(j+1))-1}, {dns_server: dns_server})
