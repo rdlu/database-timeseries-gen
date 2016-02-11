@@ -22,6 +22,9 @@ def every_so_many_seconds(seconds)
   end
 end
 
+@host = ARGV[1]
+@port = ARGV[2]
+
 case ARGV[0]
 when 'nc' then
   begin
@@ -31,7 +34,7 @@ when 'nc' then
     STDERR.puts "Aperte qualquer tecla para continuar..."
     STDIN.gets
     dns_psql_file = File.new("records/dns_data_psql.sql",'r')
-    nc = ConnectNetcat.new({host: 'localhost', port: 35562})
+    nc = ConnectNetcat.new({host: @host, port: @port})
     #contador global de linha
     $line_counter = 0
     #Thread separada monitorando a vazao
@@ -65,8 +68,10 @@ when 'psql-insert' then
     STDERR.puts "Aperte qualquer tecla para continuar..."
     STDIN.gets
     dns_psql_file = File.new("records/dns_data_psql.sql",'r')
-    psql = ConnectPsql.new({host: 'localhost', port: 3306, dbname: 'rdlu', user: 'rdlu', password: 'xinfunrinfula'})
+    psql = ConnectPsql.new({host: @host, port: @port, user: 'postgres'})
     psql.send(Psql.create_db)
+    psql.close
+    psql = ConnectPsql.new({host: @host, port: @port, db: 'rdlu', user: 'postgres'})
     psql.send(Psql.create_table('dns_results', DnsData.filters('sql'), DnsData.values('sql'), 'brin'))
 
     #contador global de linha
@@ -101,7 +106,7 @@ when 'psql-select' then
     STDERR.puts "Aperte qualquer tecla para continuar..."
     STDIN.gets
     dns_psql_file_recent = File.new("records/dns_recent_psql.sql",'r')
-    psql = ConnectPsql.new({host: 'localhost', port: 3306, dbname: 'rdlu', user: 'postgres'})
+    psql = ConnectPsql.new({host: @host, port: @port, dbname: 'rdlu', user: 'postgres'})
     #contador global de linha
     $line_counter = 0
     #Thread separada monitorando a vazao
@@ -159,7 +164,7 @@ when 'influx-insert' then
     STDERR.puts "Aperte qualquer tecla para continuar..."
     STDIN.gets
     dns_influx_file = File.new("records/dns_data_influx.line",'r')
-    influx = ConnectInflux.new({host: 'localhost', db: 'rdlu'})
+    influx = ConnectInflux.new({host: @host, port: @port, db: 'rdlu'})
     influx.post(Influxlang.create_db)
     $line_counter = 0
     #Thread separada monitorando a vazao
@@ -190,7 +195,7 @@ when 'influx-select' then
     STDERR.puts "Aperte qualquer tecla para continuar..."
     STDIN.gets
 
-    influx = ConnectInflux.new({host: 'localhost', db: 'rdlu'})
+    influx = ConnectInflux.new({host: @host, port: @port, db: 'rdlu'})
     dns_influx_file_recent = File.new("records/dns_recent_influx.sql",'r')
     $line_counter = 0
     STDOUT.puts "#RECENT"

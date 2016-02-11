@@ -4,6 +4,7 @@ class ConnectInflux
   def initialize(options)
     @host = options[:host]
     @db = options[:db]
+    @port = options[:port]
     self
   end
 
@@ -17,7 +18,7 @@ class ConnectInflux
 
   def get(query)
     request = Typhoeus::Request.new(
-      "http://#{@host}:8086/query",
+      "http://#{@host}:#{@port}/query",
       method: :get,
       params: { q: query, db: @db}
     )
