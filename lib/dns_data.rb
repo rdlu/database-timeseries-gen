@@ -1,3 +1,5 @@
+require_relative 'db_data.rb'
+
 class DnsData < DbData
   @dns_servers = %w(8.8.8.8 8.8.4.4 200.172.100.1 200.172.200.2 144.144.166.166 2001:4860:4860::8888 2001:4860:4860::8844 2001:db8:85a3::8a2e:370:7334 2001:db8:85a3:0:0:8a2e:370:7334 caf3:c4f3:c4f3::1337)
   @dns_status = %w(ok nxdomain formerr servfail timeout refused other)
