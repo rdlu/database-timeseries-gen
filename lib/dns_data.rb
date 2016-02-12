@@ -4,7 +4,7 @@ class DnsData < DbData
   @dns_servers = %w(8.8.8.8 8.8.4.4 200.172.100.1 200.172.200.2 144.144.166.166 2001:4860:4860::8888 2001:4860:4860::8844 2001:db8:85a3::8a2e:370:7334 2001:db8:85a3:0:0:8a2e:370:7334 caf3:c4f3:c4f3::1337)
   @dns_status = %w(ok nxdomain formerr servfail timeout refused other)
 
-  @dns_filters_psql = { alias: 'char(32)', ipv6: 'boolean', url: 'char(256)', dns_server: 'char(64)'}
+  @dns_filters_psql = { alias: 'char(64)', ipv6: 'boolean', url: 'char(256)', dns_server: 'char(64)'}
   @dns_filters_influx = { alias: 'string', ipv6: 'boolean', url: 'string', dns_server: 'string'}
 
   @dns_values_psql = { rtt: 'int', status: 'char(8)' }
@@ -112,5 +112,9 @@ class DnsData < DbData
 
   def self.window_size
     @window_size
+  end
+
+  def self.random_ipv6_boolean
+    rand > 0.5
   end
 end

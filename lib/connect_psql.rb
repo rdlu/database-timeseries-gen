@@ -2,7 +2,7 @@ require 'pg'
 
 class ConnectPsql
   def initialize(options)
-    @conn = PG.connect( host: options[:host], port: options[:port], dbname: options[:dbname], user: options[:user], sslmode: 'disable' )
+    @conn = PG.connect( options )
     self
   end
 

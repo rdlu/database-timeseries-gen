@@ -20,7 +20,7 @@ class Psql
 
   def self.select(table, timerange, filters)
     "SELECT * FROM #{table} WHERE (stamp BETWEEN '#{timerange[:start]}' AND '#{timerange[:end]}')" << if filters.to_a.count > 0
-      " AND (#{ filters.map do |f| "#{f[0]} = \"#{f[1]}\"" end.join(' AND ') });"
+      " AND (#{ filters.map do |f| "#{f[0]} = '#{f[1]}'" end.join(' AND ') });"
     else
       ";"
     end

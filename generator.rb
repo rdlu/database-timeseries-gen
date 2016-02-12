@@ -20,23 +20,23 @@ record_counter = 0
 or_window_start = 1388534400
 window_start = or_window_start
 window_end = window_start + DnsData.window_size - 1
-time_windows = [window_start]
 while record_counter < record_target
   DnsData.aliases.each do |aliaz|
     current_timestamp = rand(window_start..window_end)
     DnsData.dns_servers.each do |dns_server|
       DnsData.urls.each do |url|
         rtt = rand(1..500)
-        dns_psql_file.puts Psql.insert('dns_results', {stamp: format_psql_time(current_timestamp), metric: 'dns', alias: aliaz, dns_server: dns_server, url: url, rtt: rtt, status: DnsData.random_dns_status})
-        dns_influx_file.puts Influxlang.insert('dns', {alias: aliaz, dns_server: dns_server, url: url}, {rtt: rtt, status: DnsData.random_dns_status}, current_timestamp, DnsData.values('influx'))
+        dns_psql_file.puts Psql.insert('dns_results', {stamp: format_psql_time(current_timestamp), metric: 'dns', alias: aliaz, dns_server: dns_server, url: url, ipv6: DnsData.random_ipv6_boolean, rtt: rtt, status: DnsData.random_dns_status})
+        dns_influx_file.puts Influxlang.insert('dns', {alias: aliaz, dns_server: dns_server, url: url, ipv6: DnsData.random_ipv6_boolean}, {rtt: rtt, status: DnsData.random_dns_status}, current_timestamp, DnsData.values('influx'))
         record_counter += 1
       end
     end
   end
   window_start += DnsData.window_size
   window_end += DnsData.window_size
-  time_windows << window_start
 end
+window_start -= DnsData.window_size
+window_end -= DnsData.window_size
 
 dns_psql_file.close
 dns_influx_file.close
@@ -85,7 +85,7 @@ z_record_counter = 0
 num_of_time_windows = (window_end+1 - or_window_start).div(DnsData.window_size)
 puts "Zipfian:: Time windows: #{num_of_time_windows} | #{or_window_start} ~ #{window_end} / #{DnsData.window_size}"
 z = ScrambledZipfian.new num_of_time_windows
-(0..num_of_time_windows/2).each do |i|
+(0..num_of_time_windows).each do |i|
   j = z.next_value
   DnsData.dns_servers.shuffle.each do |dns_server|
     dns_psql_file_zipfian.puts Psql.select('dns_results', {start: format_psql_time(or_window_start+(DnsData.window_size*j)), end: format_psql_time(or_window_start+(DnsData.window_size*(j+1))-1) }, {dns_server: dns_server})

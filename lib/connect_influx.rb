@@ -28,7 +28,7 @@ class ConnectInflux
 
       else
         # Received a non-successful http response.
-        raise "Error sending GET to influx - code: #{response.code}, msg: #{response.return_message}"
+        raise "Error sending GET to influx - code: #{response.code}, msg: #{response.return_message}, query: #{query}"
       end
     end
 
@@ -37,7 +37,7 @@ class ConnectInflux
 
   def post(line)
     request = Typhoeus::Request.new(
-      "http://#{@host}:8086/write",
+      "http://#{@host}:#{@port}/write",
       method: :post,
       params: { db: @db },
       body: line
@@ -48,7 +48,7 @@ class ConnectInflux
 
       else
         # Received a non-successful http response.
-        raise "Error sending POST to Influx - code: #{response.code}, msg: #{response.return_message}"
+        raise "Error sending POST to Influx - code: #{response.code}, msg: #{response.return_message}, query: #{line}"
       end
     end
 

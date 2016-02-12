@@ -71,7 +71,7 @@ when 'psql-insert' then
     psql = ConnectPsql.new({host: @host, port: @port, user: 'postgres'})
     psql.send(Psql.create_db)
     psql.close
-    psql = ConnectPsql.new({host: @host, port: @port, db: 'rdlu', user: 'postgres'})
+    psql = ConnectPsql.new({host: @host, port: @port, dbname: 'rdlu', user: 'postgres'})
     psql.send(Psql.create_table('dns_results', DnsData.filters('sql'), DnsData.values('sql'), 'brin'))
 
     #contador global de linha
@@ -129,7 +129,6 @@ when 'psql-select' then
     end
     time_thread.kill
     STDOUT.puts "#{Time.now.to_f};#{$line_counter}"
-    psql.close
     dns_psql_file_recent.close
     STDERR.puts "Final do Teste 3a: Já podes coletar o arquivo com os resultados!"
     STDERR.puts "Teste 3b - Seleção com PSQL, distribuição zipfian."
@@ -165,7 +164,7 @@ when 'influx-insert' then
     STDIN.gets
     dns_influx_file = File.new("records/dns_data_influx.line",'r')
     influx = ConnectInflux.new({host: @host, port: @port, db: 'rdlu'})
-    influx.post(Influxlang.create_db)
+    influx.get(Influxlang.create_db)
     $line_counter = 0
     #Thread separada monitorando a vazao
     time_thread = Thread.new do
@@ -209,7 +208,7 @@ when 'influx-select' then
     while dns_influx_file_recent.eof == false
       line = dns_influx_file_recent.gets
       begin
-        influx.post(line)
+        influx.get(line)
         $line_counter += 1
       rescue Exception => e
         STDERR.puts "ERROR:: #{e.message}"
@@ -237,7 +236,7 @@ when 'influx-select' then
     while dns_influx_file_zipfian.eof == false
       line = dns_influx_file_zipfian.gets
       begin
-        influx.post(line)
+        influx.get(line)
         $line_counter += 1
       rescue Exception => e
         STDERR.puts "ERROR:: #{e.message}"
