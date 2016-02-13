@@ -130,7 +130,36 @@ when 'psql-select' then
     time_thread.kill
     STDOUT.puts "#{Time.now.to_f};#{$line_counter}"
     dns_psql_file_recent.close
-    STDERR.puts "Final do Teste 3a: Já podes coletar o arquivo com os resultados!"
+    STDERR.puts "Final do Teste 3a! Inicio x2."
+
+    #select recent double sized
+    dns_psql_file_recent_2 = File.new("records/dns_recent_psql_2.sql",'r')
+    #contador global de linha
+    $line_counter = 0
+    #Thread separada monitorando a vazao
+    STDOUT.puts "#RECENTx2"
+    time_thread = Thread.new do
+      every_so_many_seconds(1) do
+        STDOUT.puts "#{Time.now.to_f};#{$line_counter}"
+      end
+    end
+    #lendo do arquivo e enviando para o BD
+    while dns_psql_file_recent_2.eof == false
+      line = dns_psql_file_recent_2.gets
+      begin
+        psql.send(line)
+        $line_counter += 1
+      rescue Exception => e
+        STDERR.puts "ERROR:: #{e.message}"
+        break
+      end
+    end
+    time_thread.kill
+    STDOUT.puts "#{Time.now.to_f};#{$line_counter}"
+    dns_psql_file_recent_2.close
+    STDERR.puts "Final do Teste 3a! Fim x2."
+
+
     STDERR.puts "Teste 3b - Seleção com PSQL, distribuição zipfian."
     STDOUT.puts "#ZIPFIAN"
     dns_psql_file_zipfian = File.new("records/dns_zipfian_psql.sql",'r')
@@ -154,7 +183,32 @@ when 'psql-select' then
     STDOUT.puts "#{Time.now.to_f};#{$line_counter}"
     psql.close
     dns_psql_file_zipfian.close
-    STDERR.puts "Final do Teste 3b: Já podes coletar o arquivo com os resultados!"
+    STDERR.puts "Final do Teste 3b: janela simples."
+
+    #Zipfian PSQL x2
+    STDERR.puts "Teste 3b - Seleção com PSQL, distribuição zipfian. Janela de tempo dobrada"
+    STDOUT.puts "#ZIPFIANx2"
+    dns_psql_file_zipfian_2 = File.new("records/dns_zipfian_psql_2.sql",'r')
+    $line_counter = 0
+    time_thread = Thread.new do
+      every_so_many_seconds(1) do
+        STDOUT.puts "#{Time.now.to_f};#{$line_counter}"
+      end
+    end
+    while dns_psql_file_zipfian_2.eof == false
+      line = dns_psql_file_zipfian_2.gets
+      begin
+        psql.send(line)
+        $line_counter += 1
+      rescue Exception => e
+        STDERR.puts "ERROR:: #{e.message}"
+        break
+      end
+    end
+    time_thread.kill
+    STDOUT.puts "#{Time.now.to_f};#{$line_counter}"
+    psql.close
+    dns_psql_file_zipfian_2.close
   end
 when 'influx-insert' then
   begin
@@ -219,8 +273,34 @@ when 'influx-select' then
     STDOUT.puts "#{Time.now.to_f};#{$line_counter}"
     dns_influx_file_recent.close
 
+    #recent double sized
+    dns_influx_file_recent_2 = File.new("records/dns_recent_influx_2.sql",'r')
+    $line_counter = 0
+    STDERR.puts "#RECENTx2"
+    STDOUT.puts "#RECENTx2"
+    #Thread separada monitorando a vazao
+    time_thread = Thread.new do
+      every_so_many_seconds(1) do
+        STDOUT.puts "#{Time.now.to_f};#{$line_counter}"
+      end
+    end
+    #lendo do arquivo e enviando para o BD
+    while dns_influx_file_recent_2.eof == false
+      line = dns_influx_file_recent_2.gets
+      begin
+        influx.get(line)
+        $line_counter += 1
+      rescue Exception => e
+        STDERR.puts "ERROR:: #{e.message}"
+        break
+      end
+    end
+    time_thread.kill
+    STDOUT.puts "#{Time.now.to_f};#{$line_counter}"
+    dns_influx_file_recent_2.close
 
-    STDERR.puts "Final do Teste 5a: Já podes coletar o arquivo com os resultados!"
+
+    STDERR.puts "Final do Teste 5a."
     STDERR.puts "Teste 5b - Seleção com InfluxDB, distribuição zipfian."
     dns_influx_file_zipfian = File.new("records/dns_zipfian_influx.sql",'r')
 
@@ -246,6 +326,33 @@ when 'influx-select' then
     time_thread.kill
     STDOUT.puts "#{Time.now.to_f};#{$line_counter}"
     dns_influx_file_zipfian.close
+
+    #zipfian double sized
+    dns_influx_file_zipfian_2 = File.new("records/dns_zipfian_influx_2.sql",'r')
+
+    $line_counter = 0
+    STDERR.puts "#ZIPFIANx2"
+    STDOUT.puts "#ZIPFIANx2"
+    #Thread separada monitorando a vazao
+    time_thread = Thread.new do
+      every_so_many_seconds(1) do
+        STDOUT.puts "#{Time.now.to_f};#{$line_counter}"
+      end
+    end
+    #lendo do arquivo e enviando para o BD
+    while dns_influx_file_zipfian_2.eof == false
+      line = dns_influx_file_zipfian_2.gets
+      begin
+        influx.get(line)
+        $line_counter += 1
+      rescue Exception => e
+        STDERR.puts "ERROR:: #{e.message}"
+        break
+      end
+    end
+    time_thread.kill
+    STDOUT.puts "#{Time.now.to_f};#{$line_counter}"
+    dns_influx_file_zipfian_2.close
   end
 else
   STDERR.puts "Erro: Argumento obrigatorio faltando [nc,psql-insert,psql-select,influx-insert,influx-select]"
