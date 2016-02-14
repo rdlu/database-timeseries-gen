@@ -8,18 +8,21 @@ bundle install
 ## Gerando dados
 ruby generate.rb <quantidade de inserts>
 
+Os selects são basicamente fixos, mas que selecionam dados dentro do conjunto de inserts gerados, garantidamente.
+
 ##Enviando dados
 ruby runner.rb <modo> <host> <porta> > arquivo_com_resultados
 
 modo: psql-insert, psql-select, influx-insert, influx-select
 
-os dados são impressos no STDOUT, redirecione a saida para arquivo
+Os dados são impressos no STDOUT, redirecione a saida para arquivo
 o log de andamento é no STDERR
 
 # Maquina de banco de dados (servidor)
 
 ## Instalando o docker no Ubuntu Server
 
+https://docs.docker.com/engine/installation/linux/ubuntulinux/
 
 ## Rodando uma instancia PostgreSQL no servidor docker
 
