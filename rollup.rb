@@ -13,16 +13,14 @@ while !file.eof
     if !file.eof
       line = line_a.split(';')
       timestamp ||= line[0].to_i
-      current = line[1].to_i
+      current = line[1].to_f
       @aux << current - @previous
-      puts current - @previous
       @previous = current
-
     end
   end
   sorted = @aux.sort
   median = @aux.length % 2 == 1 ? sorted[@aux.length/2] : (sorted[@aux.length/2 - 1] + sorted[@aux.length/2]).to_f / 2
-  out_results << { timestamp: timestamp, sum: @aux.reduce(:+), points: @aux.length, avg: @aux.reduce(:+)/@aux.count, min: @aux.min, max: @aux.max, median: median.to_i }
+  out_results << { timestamp: timestamp, sum: @aux.reduce(:+), points: @aux.length, avg: @aux.reduce(:+)/@aux.count, min: @aux.min, max: @aux.max, median: median }
 end
 
 STDOUT.puts "Timestamp;Sum;Avg;Min;Max;Median"
