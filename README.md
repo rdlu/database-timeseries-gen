@@ -3,6 +3,7 @@
 Deve possuir o Ruby 2.2 ou superior
 
 gem install bundler
+
 bundle install
 
 ## Gerando dados
