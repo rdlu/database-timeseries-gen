@@ -41,6 +41,7 @@ rm -rf /var/postgresql-test
 
 #Versao 0.12
 docker build -t influx https://github.com/influxdata/influxdb-docker.git#master:0.12
+
 docker run -p 38083:8083 -p 38086:8086 -v /var/influxdb-test:/var/lib/influxdb influxdb
 
 #Versao 0.10
