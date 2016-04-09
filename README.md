@@ -39,6 +39,11 @@ rm -rf /var/postgresql-test
 
 ## Rodando uma instancia InfluxDB no servidor docker
 
+#Versao 0.12
+docker build -t influx https://github.com/influxdata/influxdb-docker.git#master:0.12
+docker run -p 38083:8083 -p 38086:8086 -v /var/influxdb-test:/var/lib/influxdb influxdb
+
+#Versao 0.10
 docker run -d --name influxdb --volume=/var/influxdb-test:/data -P -p 38083:8083 -p 38086:8086 tutum/influxdb
 
 A porta 38086 estara exposta para a todas as interfaces de rede, ela que deve ser usada na maquina cliente
