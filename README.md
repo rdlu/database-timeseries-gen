@@ -40,7 +40,7 @@ A porta 35432 estara exposta para a todas as interfaces de rede, ela que deve se
 
 ### Versao 0.12
 
-    docker build -t influx https://github.com/influxdata/influxdb-docker.git#master:0.12
+    docker build -t influxdb https://github.com/influxdata/influxdb-docker.git#master:0.12
     docker run -p 38083:8083 -p 38086:8086 -v /var/influxdb-test:/var/lib/influxdb influxdb
 
 ### Versao 0.10
