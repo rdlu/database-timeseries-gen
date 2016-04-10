@@ -24,6 +24,8 @@ end
 
 @host = ARGV[1]
 @port = ARGV[2]
+@index_type = ARGV[3]
+@index_size = ARGV[3] == 'brin' ? ARGV[4] : nil
 
 case ARGV[0]
 when 'nc' then
@@ -72,7 +74,7 @@ when 'psql-insert' then
     psql.send(Psql.create_db)
     psql.close
     psql = ConnectPsql.new({host: @host, port: @port, dbname: 'rdlu', user: 'postgres'})
-    psql.send(Psql.create_table('dns_results', DnsData.filters('sql'), DnsData.values('sql'), 'brin'))
+    psql.send(Psql.create_table('dns_results', DnsData.filters('sql'), DnsData.values('sql'), @index_type, @index_size))
 
     #contador global de linha
     $line_counter = 0
