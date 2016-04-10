@@ -44,7 +44,7 @@ A porta 35432 estara exposta para a todas as interfaces de rede, ela que deve se
     docker run -p 38083:8083 -p 38086:8086 -v /var/influxdb-test:/var/lib/influxdb influxdb
 
 ### Versao 0.10
-    
+
     docker run -d --name influxdb --volume=/var/influxdb-test:/data -P -p 38083:8083 -p 38086:8086 tutum/influxdb
 
 A porta 38086 estara exposta para a todas as interfaces de rede, ela que deve ser usada na maquina cliente
@@ -54,3 +54,43 @@ A porta 38086 estara exposta para a todas as interfaces de rede, ela que deve se
     docker stop influxdb
     docker rm influxdb
     rm -rf /var/influxdb-test
+
+
+
+# Testes realizados no meu TG
+
+    #origem
+    ruby generator 2000000
+
+    #na maquina de destino:
+    netcat -l 35562 > testfile.sql
+    #na maquina de origem
+    ruby runner nc SERVIDOR 35562 > res-netcat.csv
+    #limpar a maquina de destino
+    rm testfile.sql
+
+    #destino: Rodar instancia docker do psql
+    #origem:
+    ruby runner psql-insert SERVIDOR 35432 btree > res-psql-btree-insert.csv
+    ruby runner psql-select SERVIDOR 35432 btree > res-psql-btree-select.csv
+    #limpar destino
+
+    #destino: Rodar instancia docker do psql
+    #origem:
+    ruby runner psql-insert SERVIDOR 35432 brin > res-psql-brin-insert.csv
+    ruby runner psql-select SERVIDOR 35432 brin > res-psql-brin-select.csv
+    #limpar destino
+
+
+    #destino: Rodar instancia docker do psql
+    #origem:
+    ruby runner psql-insert SERVIDOR 35432 brin 64 > res-psql-brin-insert.csv
+    ruby runner psql-select SERVIDOR 35432 brin 64 > res-psql-brin-select.csv
+    #limpar destino
+
+
+    #destino: Rodar instancia docker do influxdb
+    #origem:
+    ruby runner influx-insert SERVIDOR 38086 > res-influx-insert.csv
+    ruby runner influx-select SERVIDOR 38086 > res-influx-select.csv
+    #limpar destino
