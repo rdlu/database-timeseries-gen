@@ -11,9 +11,11 @@ Deve possuir o Ruby 2.3 ou superior
 Os selects são basicamente fixos, mas que selecionam dados dentro do conjunto de inserts gerados, garantidamente.
 
 ##Enviando dados
-    ruby runner.rb <modo> <host> <porta> > arquivo_com_resultados
+    ruby runner.rb <modo> <host> <porta> [<tipo-indice-psql>] [<tam-indice-brin>] > arquivo_com_resultados
 
 modo: psql-insert, psql-select, influx-insert, influx-select
+tipo-indice-psql: brin, btree
+tam-indice-brin: 64,128,256,512
 
 Os dados são impressos no STDOUT, redirecione a saida para arquivo
 o log de andamento é no STDERR
