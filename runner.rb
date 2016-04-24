@@ -73,6 +73,7 @@ when 'psql-insert' then
     psql = ConnectPsql.new({host: @host, port: @port, user: 'postgres'})
     psql.send(Psql.create_db)
     psql.close
+    STDERR.puts "BD Criado..."
     psql = ConnectPsql.new({host: @host, port: @port, dbname: 'rdlu', user: 'postgres'})
     psql.send(Psql.create_table('dns_results', DnsData.filters('sql'), DnsData.values('sql'), @index_type, @index_size))
 
@@ -183,8 +184,6 @@ when 'psql-select' then
     end
     time_thread.kill
     STDOUT.puts "#{Time.now.to_f};#{$line_counter}"
-    psql.close
-    dns_psql_file_zipfian.close
     STDERR.puts "Final do Teste 3b: janela simples."
 
     #Zipfian PSQL x2
