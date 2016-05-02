@@ -120,13 +120,8 @@ when 'psql-select' then
     #lendo do arquivo e enviando para o BD
     while dns_psql_file_recent.eof == false
       line = dns_psql_file_recent.gets
-      begin
-        psql.send(line)
-        $line_counter += 1
-      rescue Exception => e
-        STDERR.puts "ERROR:: #{e.message}"
-        break
-      end
+      psql.send(line)
+      $line_counter += 1
     end
     time_thread.kill
     STDOUT.puts "#{Time.now.to_f};#{$line_counter}"
