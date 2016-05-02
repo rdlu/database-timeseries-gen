@@ -30,6 +30,12 @@ end
 STDOUT.sync = true
 STDERR.sync = true
 
+Thread.new do
+  every_so_many_seconds(30) do
+    GC.start
+  end
+end
+
 case ARGV[0]
 when 'nc' then
     #control experiment with NETCAT
@@ -122,7 +128,6 @@ when 'psql-select' then
       line = dns_psql_file_recent.gets
       psql.send(line)
       $line_counter += 1
-      GC.start
     end
     time_thread.kill
     STDOUT.puts "#{Time.now.to_f};#{$line_counter}"
@@ -143,13 +148,8 @@ when 'psql-select' then
     #lendo do arquivo e enviando para o BD
     while dns_psql_file_recent_2.eof == false
       line = dns_psql_file_recent_2.gets
-      begin
-        psql.send(line)
-        $line_counter += 1
-      rescue Exception => e
-        STDERR.puts "ERROR:: #{e.message}"
-        break
-      end
+      psql.send(line)
+      $line_counter += 1
     end
     time_thread.kill
     STDOUT.puts "#{Time.now.to_f};#{$line_counter}"
@@ -168,13 +168,8 @@ when 'psql-select' then
     end
     while dns_psql_file_zipfian.eof == false
       line = dns_psql_file_zipfian.gets
-      begin
-        psql.send(line)
-        $line_counter += 1
-      rescue Exception => e
-        STDERR.puts "ERROR:: #{e.message}"
-        break
-      end
+      psql.send(line)
+      $line_counter += 1
     end
     time_thread.kill
     STDOUT.puts "#{Time.now.to_f};#{$line_counter}"
@@ -225,7 +220,6 @@ when 'influx-insert' then
       begin
         influx.post(line)
         $line_counter += 1
-        GC.start
       rescue Exception => e
         STDERR.puts "ERROR:: #{e.message}"
         break
@@ -256,7 +250,6 @@ when 'influx-select' then
       begin
         influx.get(line)
         $line_counter += 1
-        GC.start
       rescue Exception => e
         STDERR.puts "ERROR:: #{e.message}"
         break
@@ -338,7 +331,6 @@ when 'influx-select' then
       begin
         influx.get(line)
         $line_counter += 1
-        GC.start
       rescue Exception => e
         STDERR.puts "ERROR:: #{e.message}"
         break
