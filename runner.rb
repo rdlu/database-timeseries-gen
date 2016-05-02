@@ -122,6 +122,7 @@ when 'psql-select' then
       line = dns_psql_file_recent.gets
       psql.send(line)
       $line_counter += 1
+      GC.start
     end
     time_thread.kill
     STDOUT.puts "#{Time.now.to_f};#{$line_counter}"
@@ -224,6 +225,7 @@ when 'influx-insert' then
       begin
         influx.post(line)
         $line_counter += 1
+        GC.start
       rescue Exception => e
         STDERR.puts "ERROR:: #{e.message}"
         break
@@ -254,6 +256,7 @@ when 'influx-select' then
       begin
         influx.get(line)
         $line_counter += 1
+        GC.start
       rescue Exception => e
         STDERR.puts "ERROR:: #{e.message}"
         break
@@ -335,6 +338,7 @@ when 'influx-select' then
       begin
         influx.get(line)
         $line_counter += 1
+        GC.start
       rescue Exception => e
         STDERR.puts "ERROR:: #{e.message}"
         break
