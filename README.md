@@ -98,3 +98,18 @@ A porta 38086 estara exposta para a todas as interfaces de rede, ela que deve se
     ruby runner influx-insert SERVIDOR 38086 > res-influx-insert.csv
     ruby runner influx-select SERVIDOR 38086 > res-influx-select.csv
     #limpar destino
+
+
+# Instalando Ruby e Docker no AMAZON EC2
+
+sudo yum update
+sudo yum groupinstall "Development Tools"
+sudo yum install -y docker postgresql-devel openssl-devel readline-devel git pcre pcre-devel zlib-devel
+
+git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile
+~/.rbenv/bin/rbenv init
+vim .bash_profile
+rbenv install 2.3.1
+rbenv global 2.3.1
+gem install bundler
