@@ -27,6 +27,9 @@ end
 @index_type = ARGV[3]
 @index_size = ARGV[3] == 'brin' ? ARGV[4] : nil
 
+STDOUT.sync = true
+STDERR.sync = true
+
 case ARGV[0]
 when 'nc' then
   begin
