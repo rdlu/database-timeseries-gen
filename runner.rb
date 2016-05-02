@@ -32,7 +32,6 @@ STDERR.sync = true
 
 case ARGV[0]
 when 'nc' then
-  begin
     #control experiment with NETCAT
     STDERR.puts "Teste 1 - Controle com Netcat: Deixe o Netcat rodando na máquina de destino."
     STDERR.puts "Use o comando 'netcat -l 35562 > testfile.sql' na máquina de destino"
@@ -65,9 +64,7 @@ when 'nc' then
     nc = nil
     dns_psql_file.close
     STDERR.puts "Final do Teste 1: Limpe o arquivo de teste na máquina de destino! Colete o arquivo de resultados."
-  end
 when 'psql-insert' then
-  begin
     #inserting PSQL
     STDERR.puts "Teste 2 - Inserção com PSQL: Deixe o PostgreSQL rodando na máquina de destino."
     STDERR.puts "Aperte qualquer tecla para continuar..."
@@ -104,9 +101,7 @@ when 'psql-insert' then
     psql.close
     dns_psql_file.close
     STDERR.puts "Final do Teste 2: Colete o arquivo com os resultados, inicie a fase 3!"
-  end
 when 'psql-select' then
-  begin
     #selecting PSQL
     STDERR.puts "Teste 3a - Seleção com PSQL, distribuição recentes: Deixe o PostgreSQL rodando na máquina de destino."
     STDERR.puts "Aperte qualquer tecla para continuar..."
@@ -213,9 +208,7 @@ when 'psql-select' then
     STDOUT.puts "#{Time.now.to_f};#{$line_counter}"
     psql.close
     dns_psql_file_zipfian_2.close
-  end
 when 'influx-insert' then
-  begin
     #inserting Influx
     STDERR.puts "Teste 4 - Inserção com InfluxDB: Deixe o InfluxDB rodando na máquina de destino."
     STDERR.puts "Aperte qualquer tecla para continuar..."
@@ -245,9 +238,7 @@ when 'influx-insert' then
     STDOUT.puts "#{Time.now.to_f};#{$line_counter}"
     dns_influx_file.close
     STDERR.puts "Final do Teste 4: Colete o arquivo com os resultados, inicie a fase 5!"
-  end
 when 'influx-select' then
-  begin
     STDERR.puts "Teste 5a - Seleção com InfluxDB, distribuição recentes: Deixe o InfluxDB rodando na máquina de destino."
     STDERR.puts "Aperte qualquer tecla para continuar..."
     STDIN.gets
@@ -357,7 +348,6 @@ when 'influx-select' then
     time_thread.kill
     STDOUT.puts "#{Time.now.to_f};#{$line_counter}"
     dns_influx_file_zipfian_2.close
-  end
 else
   STDERR.puts "Erro: Argumento obrigatorio faltando [nc,psql-insert,psql-select,influx-insert,influx-select]"
 end
