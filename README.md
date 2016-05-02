@@ -102,6 +102,10 @@ A porta 38086 estara exposta para a todas as interfaces de rede, ela que deve se
 
 # Instalando Ruby e Docker no AMAZON EC2
 
+
+```
+#!bash
+
 sudo yum update
 sudo yum groupinstall "Development Tools"
 sudo yum install -y docker postgresql-devel openssl-devel readline-devel git pcre pcre-devel zlib-devel
@@ -113,3 +117,4 @@ vim .bash_profile
 rbenv install 2.3.1
 rbenv global 2.3.1
 gem install bundler
+```
