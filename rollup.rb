@@ -5,12 +5,14 @@ STDERR.puts "SECONDS: #{seconds}"
 
 out_results = Array.new
 @previous = 0
+linen = 1
 while !file.eof
   @aux = Array.new
   timestamp = false
-  (0..(seconds)).each do |i|
+  (1..(seconds)).each do |i|
     line_a = file.gets
     if !file.eof
+      linen += 1
       line = line_a.split(';')
       timestamp ||= line[0].to_i
       current = line[1].to_f
@@ -18,9 +20,12 @@ while !file.eof
       @previous = current
     end
   end
-  sorted = @aux.sort
-  median = @aux.length % 2 == 1 ? sorted[@aux.length/2] : (sorted[@aux.length/2 - 1] + sorted[@aux.length/2]).to_f / 2
-  out_results << { timestamp: timestamp, sum: @aux.reduce(:+), points: @aux.length, avg: @aux.reduce(:+)/@aux.count, min: @aux.min, max: @aux.max, median: median }
+  #puts "#{linen} #{@aux}"
+  if @aux.length > 0
+    sorted = @aux.sort
+    median = @aux.length % 2 == 1 ? sorted[@aux.length/2] : (sorted[@aux.length/2 - 1] + sorted[@aux.length/2]).to_f / 2
+    out_results << { timestamp: timestamp, sum: @aux.reduce(:+), points: @aux.length, avg: @aux.reduce(:+)/@aux.count, min: @aux.min, max: @aux.max, median: median }
+  end
 end
 
 STDOUT.puts "Timestamp;Sum;Avg;Min;Max;Median"

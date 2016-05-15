@@ -11,8 +11,6 @@ do
 		newfile="${f##*/}"
 		echo "Rolling up! - $f -> $newfile"
 		ruby rollup.rb ${f} ${i} > "./rollup/${i}d/${newfile}"
-		ruby rollup.rb ${f} ${i} > "./rollup/${i}d/${newfile}"
-		sed 's/\./,/g' "./rollup/${i}d/${newfile}" > "./rollup/${i}/${newfile}"
 		sed 's/\./,/g' "./rollup/${i}d/${newfile}" > "./rollup/${i}/${newfile}"
 	done
 done
