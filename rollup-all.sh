@@ -1,10 +1,18 @@
 #!/bin/bash
+OUTPUT=(10 15 30 60)
+
 shopt -s nullglob
-mkdir -p rollup/{1,5}
-for f in results/*.csv
+rm -rf rollup/
+for i in ${OUTPUT[@]}
 do
-	newfile="${f##*/}"
-	echo "Rolling up! - $f -> $newfile"
-    ruby rollup.rb ${f} 1 > "./rollup/1/${newfile}"
-	ruby rollup.rb ${f} 5 > "./rollup/5/${newfile}"
+	mkdir -p rollup/{${i},${i}d}
+	for f in results/*.csv
+	do
+		newfile="${f##*/}"
+		echo "Rolling up! - $f -> $newfile"
+		ruby rollup.rb ${f} ${i} > "./rollup/${i}d/${newfile}"
+		ruby rollup.rb ${f} ${i} > "./rollup/${i}d/${newfile}"
+		sed 's/\./,/g' "./rollup/${i}d/${newfile}" > "./rollup/${i}/${newfile}"
+		sed 's/\./,/g' "./rollup/${i}d/${newfile}" > "./rollup/${i}/${newfile}"
+	done
 done

@@ -1,4 +1,4 @@
 records/*.sql
 records/*.line
 results/*
-rollup/*.csv
+rollup/*

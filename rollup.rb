@@ -1,14 +1,14 @@
-STDERR.puts "Roll up results in windows of minutes"
+STDERR.puts "Roll up results in windows of seconds"
 file = File.new("#{ARGV[0]}",'r')
-minutes = ARGV[1].to_i
-STDERR.puts "Minutes: #{minutes}"
+seconds = ARGV[1].to_i
+STDERR.puts "SECONDS: #{seconds}"
 
 out_results = Array.new
 @previous = 0
 while !file.eof
   @aux = Array.new
   timestamp = false
-  (0..(minutes*60)).each do |i|
+  (0..(seconds)).each do |i|
     line_a = file.gets
     if !file.eof
       line = line_a.split(';')
